@@ -1,36 +1,24 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const path = require('path');
 
+// Créer une application Express
 const app = express();
+
+// Créer un serveur HTTP avec Express
 const server = http.createServer(app);
+
+// Créer un serveur WebSocket sur le même serveur HTTP
 const wss = new WebSocket.Server({ server });
 
-// Sert les fichiers statiques (index.html, etc.)
-app.use(express.static(__dirname));
+// Servir les fichiers statiques (index.html, etc.)
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Lorsque quelqu'un se connecte via WebSocket
-wss.on('connection', socket => {
-    console.log('Un utilisateur s\'est connecté.');
+// Importer le fichier de gestion des WebSockets (index.js)
+require('./index.js')(wss);
 
-    // Lorsqu'un message est reçu d'un client
-    socket.on('message', message => {
-        console.log('Message reçu:', message);  // Affiche le message dans la console
-        // Transmet le message à tous les autres clients connectés
-        wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message);  // Envoie le message à tous les clients
-            }
-        });
-    });
-
-    // Lorsque la connexion est fermée
-    socket.on('close', () => {
-        console.log('Un utilisateur s\'est déconnecté.');
-    });
-});
-
-// Utilise le port spécifié par l'environnement ou 3000 par défaut
+// Utiliser le port spécifié par l'environnement ou 3000 par défaut
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Serveur WebSocket en ligne sur http://localhost:${PORT}`);
