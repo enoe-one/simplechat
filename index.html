@@ -23,14 +23,15 @@
 
         socket.onmessage = event => {
             const msg = document.createElement('p');
-            msg.textContent = event.data;
+            msg.textContent = event.data; // Affiche le message texte
             messagesDiv.appendChild(msg);
         };
 
         function sendMessage() {
-            if (input.value.trim() !== '') {
-                socket.send(input.value.toString());
-                input.value = '';
+            const message = input.value.trim();
+            if (message !== '') {
+                socket.send(message); // Envoie le message texte
+                input.value = ''; // Réinitialise l'input après envoi
             }
         }
     </script>
