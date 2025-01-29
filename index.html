@@ -29,7 +29,7 @@
 
         function sendMessage() {
             if (input.value.trim() !== '') {
-                socket.send(input.value);
+                socket.send(input.value.toString());
                 input.value = '';
             }
         }
