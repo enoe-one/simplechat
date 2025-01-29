@@ -17,21 +17,25 @@
     <button onclick="sendMessage()">Envoyer</button>
 
     <script>
+        // Créer une connexion WebSocket
         const socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
         const messagesDiv = document.getElementById('messages');
         const input = document.getElementById('messageInput');
 
+        // Lorsque le serveur envoie un message
         socket.onmessage = event => {
             const msg = document.createElement('p');
-            msg.textContent = event.data; // Affiche le message texte
+            msg.textContent = event.data;  // Affiche le message texte
             messagesDiv.appendChild(msg);
         };
 
+        // Fonction pour envoyer un message
         function sendMessage() {
-            const message = input.value.trim();
+            const message = input.value.trim();  // Récupère le message saisi
+            console.log("Message envoyé : ", message);  // Affiche ce qui est envoyé dans la console
             if (message !== '') {
-                socket.send(message); // Envoie le message texte
-                input.value = ''; // Réinitialise l'input après envoi
+                socket.send(message);  // Envoie le message texte
+                input.value = '';  // Réinitialise l'input après envoi
             }
         }
     </script>
