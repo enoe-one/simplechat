@@ -18,7 +18,7 @@
 
     <script>
         // Créer une connexion WebSocket
-        const socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+        const socket = new WebSocket('wss://simplechat.up.railway.app');
         const messagesDiv = document.getElementById('messages');
         const input = document.getElementById('messageInput');
 
