@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #messages { width: 50%; margin: auto; border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: auto; }
+        input, button { margin-top: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Mini Chat</h1>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Tapez un message...">
+    <button onclick="sendMessage()">Envoyer</button>
+
+    <script>
+        const socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+        const messagesDiv = document.getElementById('messages');
+        const input = document.getElementById('messageInput');
+
+        socket.onmessage = event => {
+            const msg = document.createElement('p');
+            msg.textContent = event.data;
+            messagesDiv.appendChild(msg);
+        };
+
+        function sendMessage() {
+            if (input.value.trim() !== '') {
+                socket.send(input.value);
+                input.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
